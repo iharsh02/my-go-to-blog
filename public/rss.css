@@ -1,0 +1,92 @@
+/* Makes /rss readable when opened directly in a browser */
+rss {
+  display: block;
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: 3rem 1.25rem;
+  font: 16px/1.6 system-ui, sans-serif;
+  color: #1c1b19;
+  background: #faf9f6;
+}
+
+channel > title {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+channel > description {
+  display: block;
+  margin-top: 0.25rem;
+  color: #6f6d67;
+}
+
+channel > link {
+  display: none;
+}
+
+channel::before {
+  content: 'This is an RSS feed. Copy this page’s URL into a feed reader app to follow new posts.';
+  display: block;
+  margin-bottom: 2rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid #e6e3dc;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  color: #6f6d67;
+}
+
+item {
+  display: flex;
+  flex-direction: column;
+  padding: 1.25rem 0;
+  border-bottom: 1px solid #e6e3dc;
+}
+
+item:first-of-type {
+  margin-top: 2rem;
+  border-top: 1px solid #e6e3dc;
+}
+
+item > title {
+  display: block;
+  font-weight: 600;
+}
+
+item > pubDate {
+  order: 1;
+  font-size: 0.875rem;
+  color: #6f6d67;
+}
+
+item > description {
+  order: 2;
+  margin-top: 0.25rem;
+  color: #6f6d67;
+}
+
+item > link {
+  order: 3;
+  font-size: 0.875rem;
+  color: #6f6d67;
+  word-break: break-all;
+}
+
+@media (prefers-color-scheme: dark) {
+  rss {
+    color: #ecebe7;
+    background: #111110;
+  }
+  channel > description,
+  channel::before,
+  item > pubDate,
+  item > description,
+  item > link {
+    color: #9a9892;
+  }
+  channel::before,
+  item,
+  item:first-of-type {
+    border-color: #262523;
+  }
+}

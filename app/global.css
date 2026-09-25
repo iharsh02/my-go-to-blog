@@ -1,0 +1,192 @@
+@import 'tailwindcss';
+
+:root {
+  --bg: #faf9f6;
+  --fg: #1c1b19;
+  --muted: #6f6d67;
+  --subtle: #a3a19a;
+  --line: #e6e3dc;
+  --card: #f2f0ea;
+  --accent: #c2410c;
+
+  --sh-class: #2d5e9d;
+  --sh-identifier: #354150;
+  --sh-sign: #8996a3;
+  --sh-string: #007f7a;
+  --sh-keyword: #c2410c;
+  --sh-comment: #a19595;
+  --sh-jsxliterals: #6266d1;
+  --sh-property: #b45309;
+  --sh-entity: #b45309;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #111110;
+    --fg: #ecebe7;
+    --muted: #9a9892;
+    --subtle: #64625d;
+    --line: #262523;
+    --card: #1a1918;
+    --accent: #fb8a4b;
+
+    --sh-class: #7cb4ff;
+    --sh-identifier: #ecebe7;
+    --sh-keyword: #fb8a4b;
+    --sh-string: #3cc4b4;
+    --sh-property: #f5b76a;
+    --sh-entity: #f5b76a;
+  }
+  html {
+    color-scheme: dark;
+  }
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-subtle: var(--subtle);
+  --color-line: var(--line);
+  --color-card: var(--card);
+  --color-accent: var(--accent);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+html {
+  min-width: 360px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-feature-settings: 'ss01', 'cv11';
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+::selection {
+  background-color: var(--accent);
+  color: var(--bg);
+}
+
+.title {
+  text-wrap: balance;
+}
+
+/* ---------- Article typography ---------- */
+
+.prose {
+  @apply leading-[1.75];
+}
+
+.prose > :first-child {
+  margin-top: 0 !important;
+}
+
+.prose p {
+  @apply my-5;
+}
+
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4 {
+  @apply relative font-semibold tracking-tight scroll-mt-24;
+}
+.prose h1 {
+  @apply text-2xl mt-12 mb-4;
+}
+.prose h2 {
+  @apply text-xl mt-12 mb-3;
+}
+.prose h3 {
+  @apply text-lg mt-10 mb-2;
+}
+.prose h4 {
+  @apply text-base mt-8 mb-2;
+}
+
+.prose .anchor {
+  @apply absolute invisible no-underline -ml-6 pr-2;
+}
+.prose .anchor::after {
+  @apply text-subtle;
+  content: '#';
+}
+.prose *:hover > .anchor {
+  @apply visible;
+}
+
+.prose a:not(.anchor) {
+  @apply underline decoration-line decoration-[0.08em] underline-offset-[3px] transition-colors hover:decoration-fg;
+}
+
+.prose strong {
+  @apply font-semibold;
+}
+
+.prose ul {
+  @apply list-disc pl-6 my-5 space-y-2 marker:text-subtle;
+}
+.prose ol {
+  @apply list-decimal pl-6 my-5 space-y-2 marker:text-subtle;
+}
+
+.prose blockquote {
+  @apply my-6 border-l-2 border-line pl-4 text-muted italic;
+}
+
+.prose hr {
+  @apply my-12 border-line;
+}
+
+.prose img {
+  @apply my-8 rounded-xl border border-line;
+}
+
+.prose code {
+  @apply rounded-md bg-card px-1.5 py-0.5 font-mono text-[0.875em];
+}
+
+.prose pre {
+  @apply my-8 overflow-x-auto rounded-xl border border-line bg-card px-5 py-4 text-sm;
+}
+
+.prose pre code {
+  @apply bg-transparent p-0 text-[0.875rem] leading-relaxed;
+}
+
+.prose table {
+  @apply my-8 block max-w-fit overflow-x-auto whitespace-nowrap text-sm;
+}
+.prose th,
+.prose td {
+  @apply border-b border-line px-4 py-2 text-left;
+}
+.prose th {
+  @apply font-semibold;
+}
+
+pre {
+  scrollbar-width: none;
+}
+pre::-webkit-scrollbar {
+  display: none;
+}
+
+/* Remove Safari input shadow on mobile */
+input[type='text'],
+input[type='email'] {
+  appearance: none;
+}
