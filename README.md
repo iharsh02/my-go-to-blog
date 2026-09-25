@@ -1,46 +1,42 @@
-# Portfolio Blog Starter
+# my-go-to-blog
 
-This is a porfolio site template complete with a blog. Includes:
+## Stack
 
-- MDX and Markdown support
-- Optimized for SEO (sitemap, robots, JSON-LD schema)
-- RSS Feed
-- Dynamic OG images
-- Syntax highlighting
-- Tailwind v4
-- Vercel Speed Insights / Web Analytics
-- Geist font
+- [Next.js](https://nextjs.org) (App Router) + TypeScript
+- MDX posts via `next-mdx-remote`, syntax highlighting with `sugar-high`
+- Tailwind CSS v4, Geist font
+- RSS feed, sitemap, robots, JSON-LD, dynamic OG images
 
-## Make it yours
+## Follow via RSS
 
-Edit `app/site.ts` — name, role, about text, and links all live there. Posts are MDX files in `app/blog/posts`.
+The blog has an RSS feed, so you can get new posts in your feed reader without checking the site.
 
-## Demo
+**Feed URL:** `https://<site-domain>/rss`
 
-https://portfolio-blog-starter.vercel.app
+1. Copy the feed URL above (or click **RSS** on the home page).
+2. Open your RSS reader, e.g. [Feedly](https://feedly.com), [Inoreader](https://www.inoreader.com), [NetNewsWire](https://netnewswire.com), or [Miniflux](https://miniflux.app).
+3. Choose **Add feed** / **Subscribe** and paste the URL.
 
-## How to Use
+Each new post shows up in your reader with its title, summary, and a link to the full article.
 
-You can choose from one of the following two methods to use this repository:
+## Writing a post
 
-### One-Click Deploy
+Add an `.mdx` file to `app/blog/posts/`. The filename becomes the URL slug.
 
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=vercel-examples):
+```mdx
+---
+title: 'Post title'
+publishedAt: '2026-09-25'
+summary: 'One-line summary shown in lists and previews.'
+---
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/vercel/examples/tree/main/solutions/blog&project-name=blog&repository-name=blog)
-
-### Clone and Deploy
-
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [pnpm](https://pnpm.io/installation) to bootstrap the example:
-
-```bash
-pnpm create next-app --example https://github.com/vercel/examples/tree/main/solutions/blog blog
+Post content here.
 ```
 
-Then, run Next.js in development mode:
+## Configuration
 
-```bash
-pnpm dev
-```
+Everything personal — name, tagline, about text, links, and site URL — lives in `app/site.ts`.
 
-Deploy it to the cloud with [Vercel](https://vercel.com/templates) ([Documentation](https://nextjs.org/docs/app/building-your-application/deploying)).
+## Credits
+
+Started from Vercel's [Portfolio Blog Starter](https://github.com/vercel/examples/tree/main/solutions/blog).
