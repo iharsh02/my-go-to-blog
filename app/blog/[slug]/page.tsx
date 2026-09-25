@@ -7,6 +7,9 @@ import { site } from 'app/site'
 
 type Props = { params: Promise<{ slug: string }> }
 
+// Posts are read from disk at build time; Workers have no filesystem at runtime
+export const dynamicParams = false
+
 export async function generateStaticParams() {
   return getBlogPosts().map((post) => ({ slug: post.slug }))
 }

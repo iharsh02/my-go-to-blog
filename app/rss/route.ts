@@ -10,6 +10,9 @@ function escape(text: string) {
     .replace(/>/g, '&gt;')
 }
 
+// Posts are read from disk, so build the feed at build time (Workers have no filesystem)
+export const dynamic = 'force-static'
+
 export async function GET() {
   const itemsXml = getBlogPosts()
     .map(

@@ -1,11 +1,15 @@
 {
   "private": true,
+  "packageManager": "pnpm@11.13.1",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
+    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy"
   },
   "dependencies": {
+    "@opennextjs/cloudflare": "^1.20.6",
     "@tailwindcss/postcss": "4.3.3",
     "@types/node": "20.11.17",
     "@types/react": "18.2.55",
@@ -21,5 +25,8 @@
     "sugar-high": "^0.6.0",
     "tailwindcss": "4.3.3",
     "typescript": "^5"
+  },
+  "devDependencies": {
+    "wrangler": "^4.138.0"
   }
 }
