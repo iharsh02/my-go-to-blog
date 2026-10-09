@@ -3,7 +3,7 @@ export const site = {
   name: 'Harsh Thakur',
   // Short line under your name on the home page
   tagline: 'keep it real!',
-  url: 'https://portfolio-blog-starter.vercel.app',
+  url: 'https://keepitreal-nine.vercel.app',
   description:
     'Software developer interested in systems, tooling, and the messy parts of software that usually get hidden behind abstractions.',
   // One string per paragraph on the home page
