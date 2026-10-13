@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { LinkIcon } from 'app/components/icons'
 import { site } from 'app/site'
 import { Style , Avatar } from "@dicebear/core"
-import lorelei from '@dicebear/styles/lorelei.json' with { type : json };
+import lorelei from '@dicebear/styles/lorelei.json'
 
 const style = new Style(lorelei);
 
