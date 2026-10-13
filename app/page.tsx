@@ -1,12 +1,19 @@
 import Link from 'next/link'
 import { LinkIcon } from 'app/components/icons'
 import { site } from 'app/site'
+import { Style , Avatar } from "@dicebear/core"
+import lorelei from '@dicebear/styles/lorelei.json' with { type : json };
 
-let initials = site.name
-  .split(' ')
-  .map((word) => word[0])
-  .join('')
-  .slice(0, 2)
+const style = new Style(lorelei);
+
+const UserAvatar =({seed = 'Sophie'} : {seed?: string})=>{
+  const dataUri = new Avatar(style , {
+    seed, 
+    size: 128
+  }).toDataUri();
+
+  return <img src={dataUri} alt="Avatar" width={128} height={128} />
+}
 
 export default function Page() {
   return (
@@ -16,7 +23,7 @@ export default function Page() {
           aria-hidden
           className="grid size-20 shrink-0 place-items-center rounded-full border border-line bg-card text-2xl font-medium tracking-tight text-muted select-none sm:size-24 sm:text-3xl"
         >
-          {initials}
+        <UserAvatar />
         </div>
         <div className="min-w-0">
           <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
