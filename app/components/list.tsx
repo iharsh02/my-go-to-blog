@@ -1,7 +1,6 @@
 import Link from 'next/link'
 import { Icon, type IconName } from './icons'
 
-// Row used for post listings.
 export function ListItem({
   title,
   meta,

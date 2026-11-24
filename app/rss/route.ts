@@ -2,7 +2,6 @@ import { baseUrl } from 'app/sitemap'
 import { getBlogPosts } from 'app/blog/utils'
 import { site } from 'app/site'
 
-// Titles like "Tips & Tricks" would otherwise produce invalid XML
 function escape(text: string) {
   return text
     .replace(/&/g, '&amp;')
@@ -10,7 +9,6 @@ function escape(text: string) {
     .replace(/>/g, '&gt;')
 }
 
-// Posts are read from disk, so build the feed at build time (Workers have no filesystem)
 export const dynamic = 'force-static'
 
 export async function GET() {

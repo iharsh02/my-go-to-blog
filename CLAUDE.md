@@ -1,1 +1,3 @@
 - Read `DESIGN.md` before changing any page, component or style: it defines the blueprint grid, tokens, components, motion and how to verify UI work.
+- Architecture decisions live in `docs/adr/`. Read the relevant ADR before changing deployment or data fetching, theming, or icons.
+- Code comments are banned and enforced by `pnpm lint` (a ratchet). Record decisions in an ADR and file hacks as GitHub issues instead.

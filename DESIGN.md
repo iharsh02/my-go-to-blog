@@ -33,12 +33,11 @@ Tokens live in `app/global.css` as CSS variables written with `light-dark()`, ex
 | `line` | every rule, border and divider |
 | `card`, `card-2` | raised surfaces; `card-2` for hover fills and tinted boxes |
 | `ink` | handwritten margin notes |
-| `shadow-soft`, `shadow-float` | resting cards; floating previews, pill, notch |
+| `shadow-soft`, `shadow-float` | resting cards; floating previews and the pill |
 | `ease-spring` | CSS spring easing for transforms |
 | `--gh-0`…`--gh-4` | GitHub contribution levels |
 
 - **Theme.** `data-theme` on `<html>` is set before paint by the script in `app/layout.tsx` (stored as `light`, `dark` or `system`). Components never branch on theme in JS; `light-dark()` handles it. Box shadows can't use `light-dark()`, so they are swapped per theme in the `--elev-*` rules.
-- **Dark surfaces.** The Writing notch (`.notch`) is dark in both themes, with a film-grain overlay. Text on it uses `text-white/…` steps, and its focus ring is white.
 - **Type.** Geist Sans for UI and prose, Geist Mono for captions, dates and labels in the blueprint voice (taglines, year headers, measurements), Caveat (`font-hand`) only for margin notes. Bold inside body copy is `font-semibold text-fg` against `muted` text: that contrast is the rhythm of the bio and the article.
 
 ## Components
@@ -47,15 +46,15 @@ Tokens live in `app/global.css` as CSS variables written with `light-dark()`, ex
 | --- | --- | --- |
 | Header pill + ⌘K menu | `components/nav.tsx` | Site navigation, theme switcher. Arrow-key menu, Esc closes. |
 | Social row + hover previews | `components/social.tsx` | Contact links. One floating card morphs between previews (GitHub graph, X profile, RSS, email). |
-| `WritingNotch` | `components/notch.tsx` | Dark featured card for the latest post on the home page. |
-| `PostListItem` | `components/posts.tsx` | A post row inside the white list card (`/blog`, "Keep reading"). |
+| `LatestPost` | `components/latest-post.tsx` | The newest post on the home page as ruled rows: header strip, post with faded excerpt, "All posts" row. |
+| `PostListItem` | `components/posts.tsx` | A ruled post row on the grid (`/blog`, "Keep reading"). |
 | `Hatch` | `components/grid.tsx` | Band between rows; `measure="32"` adds a margin dimension. |
 | `Dimension`, `Note` | `components/annotations.tsx` | Margin annotations (below). |
 | `BrandIcon` | `components/icons.tsx` | Official brand marks in official colors. |
 | `LinkIcon`, `Icon` | `components/icons.tsx` | Mono glyphs (`LinkIcon` for links, `Icon` for UI strokes). |
 | `CopyPage` | `components/copy-page.tsx` | Copies a post as Markdown. |
 
-**Cards** share one shape: `rounded-[22px] border border-line bg-card shadow-soft`, with inner surfaces at `rounded-[18px]`. Lists of posts are one card with `divide-y divide-line` rows, not a grid of separate cards.
+**Cards** share one shape: `rounded-[22px] border border-line bg-card shadow-soft`, with inner surfaces at `rounded-[18px]`. Reserve cards for floating things (hover previews, the ⌘K menu). Content sits directly on the grid, never in a card: the home "Latest writing" block (`LatestPost`), post lists (`divide-y divide-line` rows of `PostListItem`: a mono meta cell ruled off from the content cell on `sm` up, stacked on phones) and the article page are all ruled rows.
 
 **Hover.** Things are fully colored at rest. When one item in a set is hovered, it stays highlighted and its siblings fade (grayscale or opacity), via a `:has(:hover)` rule on the parent. Hovered links lift slightly (`-translate-y-0.5`) or nudge their arrow; titles in list rows soften to `muted`.
 

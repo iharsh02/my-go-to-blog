@@ -17,7 +17,6 @@ function applyTheme(theme: Theme) {
     (theme === 'system' && matchMedia('(prefers-color-scheme: dark)').matches)
   root.classList.add('theme-switching')
   root.dataset.theme = dark ? 'dark' : 'light'
-  // Force a style flush so the swap happens with transitions off
   void getComputedStyle(root).color
   requestAnimationFrame(() => root.classList.remove('theme-switching'))
 }
@@ -31,7 +30,6 @@ function useTheme() {
     } catch {}
   }, [])
 
-  // Follow the OS while on "system"
   useEffect(() => {
     if (theme !== 'system') return
     let query = matchMedia('(prefers-color-scheme: dark)')
@@ -51,7 +49,6 @@ function useTheme() {
   return [theme, setTheme] as const
 }
 
-// Pages go through next/link; feeds, mail and other sites are plain anchors
 type Item = { label: string; href: string; icon: IconName | 'brand'; page?: boolean }
 
 export function Navbar({
@@ -91,7 +88,6 @@ export function Navbar({
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  // Rotate the subtitle under the name
   useEffect(() => {
     if (reduceMotion || open || lines.length < 2) return
     let id = setInterval(() => setLine((i) => (i + 1) % lines.length), 3500)
@@ -100,7 +96,6 @@ export function Navbar({
 
   useEffect(() => close(), [pathname, close])
 
-  // ⌘K / Ctrl+K toggles from anywhere
   useEffect(() => {
     let onKey = (e: KeyboardEvent) => {
       if (e.key.toLowerCase() === 'k' && (e.metaKey || e.ctrlKey)) {
@@ -121,7 +116,6 @@ export function Navbar({
     return () => document.removeEventListener('pointerdown', onPointer)
   }, [open, close])
 
-  // Arrow keys walk every item in the panel, theme buttons included
   let onPanelKey = (e: React.KeyboardEvent) => {
     let items = Array.from(
       panelRef.current?.querySelectorAll<HTMLElement>('[data-item]') ?? []

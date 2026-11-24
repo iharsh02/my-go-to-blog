@@ -1,6 +1,3 @@
-// Blueprint-style margin details: measurement markers and handwritten notes.
-// Purely decorative, so everything is aria-hidden and ignores the pointer.
-
 function Arrowhead({ dir }: { dir: 'up' | 'down' | 'left' | 'right' }) {
   let rotate = { up: 0, right: 90, down: 180, left: 270 }[dir]
   return (
@@ -17,7 +14,6 @@ function Arrowhead({ dir }: { dir: 'up' | 'down' | 'left' | 'right' }) {
   )
 }
 
-// A measurement line with end ticks, arrows and a label in the middle
 export function Dimension({
   label,
   vertical,
@@ -26,7 +22,6 @@ export function Dimension({
 }: {
   label: string
   vertical?: boolean
-  // For short spans: no gap in the line, label set beside it
   compact?: boolean
   className?: string
 }) {
@@ -57,17 +52,12 @@ export function Dimension({
 }
 
 const arrows = {
-  // Curls down and to the right
   'down-right': { box: '0 0 44 40', d: 'M5 4c1 14 9 25 31 29', head: 'M28 27l9 6-10 4' },
-  // Sweeps left
   left: { box: '0 0 56 30', d: 'M52 6C38 1 22 4 8 17', head: 'M17 16l-9 2 2-9' },
-  // Points right
   right: { box: '0 0 56 30', d: 'M4 6c14-5 30-2 44 11', head: 'M39 16l9 2-2-9' },
-  // Drops down and to the left
   'down-left': { box: '0 0 44 40', d: 'M39 4c-1 14-9 25-31 29', head: 'M16 27l-9 6 10 4' },
 }
 
-// A handwritten note with a hand-drawn arrow
 export function Note({
   children,
   arrow,

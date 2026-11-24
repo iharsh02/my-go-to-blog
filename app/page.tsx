@@ -3,11 +3,10 @@ import { avatarUri } from 'app/lib/avatar'
 import { getContributions, getProfile } from 'app/lib/github'
 import { formatDate, getBlogPosts, getExcerpt } from 'app/blog/utils'
 import { Social } from 'app/components/social'
-import { WritingNotch } from 'app/components/notch'
+import { LatestPost } from 'app/components/latest-post'
 import { Dimension, Note } from 'app/components/annotations'
 import { Hatch } from 'app/components/grid'
 
-// Renders **bold** spans from the strings in site.about
 function Rich({ text }: { text: string }) {
   return text.split(/(\*\*[^*]+\*\*)/).map((part, i) =>
     part.startsWith('**') ? (
@@ -29,10 +28,8 @@ export default async function Page() {
   let avatar = avatarUri()
 
   return (
-    // Bleed out of main's padding so rows run rail to rail
     <div className="-mx-4 sm:-mx-5">
       <section className="rule-top relative grid grid-cols-[auto_1fr]">
-        {/* Margin details, only where the gutters have room */}
         <Dimension
           label="672"
           className="absolute inset-x-0 bottom-full mb-5 hidden md:flex"
@@ -105,7 +102,7 @@ export default async function Page() {
 
       {posts.length > 0 && (
         <>
-          <section id="writing" aria-label="Writing" className="relative px-4 py-6 sm:px-5">
+          <section id="writing" aria-label="Writing" className="relative">
             <Note
               arrow="down-left"
               tilt={5}
@@ -113,7 +110,7 @@ export default async function Page() {
             >
               fresh off the keyboard
             </Note>
-            <WritingNotch
+            <LatestPost
               total={posts.length}
               post={{
                 title: posts[0].metadata.title,

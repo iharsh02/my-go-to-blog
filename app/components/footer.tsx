@@ -29,7 +29,6 @@ export default function Footer() {
         </ul>
       </div>
 
-      {/* Oversized name, sized to the content column and faded out at the bottom */}
       <div className="px-4 pt-4 [container-type:inline-size] sm:px-5 sm:pt-6">
         <p aria-hidden className="wordmark">
           {site.name}

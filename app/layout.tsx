@@ -11,10 +11,8 @@ import { site, visibleLinks } from './site'
 import { avatarUri } from './lib/avatar'
 import { getBlogPosts } from './blog/utils'
 
-// Handwriting for the margin notes
 const hand = Caveat({ subsets: ['latin'], weight: ['500'], variable: '--font-caveat' })
 
-// Runs before paint so the saved theme never flashes
 const themeScript = `try{var t=localStorage.getItem('theme')||'system';var d=t==='dark'||(t==='system'&&matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.dataset.theme=d?'dark':'light'}catch(e){}`
 
 export const metadata: Metadata = {
@@ -78,7 +76,6 @@ export default function RootLayout({
             .slice(0, 3)
             .map((p) => ({ title: p.metadata.title, href: `/blog/${p.slug}` }))}
         />
-        {/* overflow-x-clip trims the full-bleed rules that reach past the scrollbar */}
         <div className="flex min-h-dvh flex-col overflow-x-clip">
           <main
             id="main"

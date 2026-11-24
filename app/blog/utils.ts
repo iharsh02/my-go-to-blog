@@ -6,7 +6,6 @@ type Metadata = {
   publishedAt: string
   summary: string
   image?: string
-  // Optional label shown before the date in the post list, e.g. tag: Essay
   tag?: string
 }
 
@@ -21,7 +20,7 @@ function parseFrontmatter(fileContent: string) {
   frontMatterLines.forEach((line) => {
     let [key, ...valueArr] = line.split(': ')
     let value = valueArr.join(': ').trim()
-    value = value.replace(/^['"](.*)['"]$/, '$1') // Remove quotes
+    value = value.replace(/^['"](.*)['"]$/, '$1')
     metadata[key.trim() as keyof Metadata] = value
   })
 
@@ -29,7 +28,6 @@ function parseFrontmatter(fileContent: string) {
 }
 
 function getMDXFiles(dir) {
-  // Git doesn't keep empty folders, so the posts folder may not exist yet
   if (!fs.existsSync(dir)) return []
   return fs.readdirSync(dir).filter((file) => path.extname(file) === '.mdx')
 }
@@ -55,7 +53,6 @@ function getMDXData(dir) {
   })
 }
 
-// Newest first
 export function getBlogPosts() {
   return getMDXData(path.join(process.cwd(), 'app', 'blog', 'posts')).sort(
     (a, b) => b.metadata.publishedAt.localeCompare(a.metadata.publishedAt)
@@ -73,7 +70,6 @@ export function formatDate(date: string, style: 'short' | 'long' = 'long') {
   })
 }
 
-// Opening paragraphs of a post as plain text, for previews
 export function getExcerpt(content: string, paragraphs = 3) {
   return content
     .split(/\n\s*\n/)

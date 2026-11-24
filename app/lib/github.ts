@@ -1,6 +1,3 @@
-// Public GitHub data, fetched once at build time (pages are prerendered).
-// Every function returns null on failure so the page still builds offline.
-
 export type Day = { date: string; level: number; count: number }
 export type Contributions = { total: number; weeks: Day[][] }
 
@@ -26,7 +23,6 @@ export async function getContributions(
     if (!res.ok) return null
     let html = await res.text()
 
-    // Counts live in tooltips keyed by the cell id
     let counts = new Map<string, number>()
     for (let [, id, text] of html.matchAll(
       /<tool-tip[^>]*for="([^"]+)"[^>]*>([^<]*)<\/tool-tip>/g
@@ -34,7 +30,6 @@ export async function getContributions(
       counts.set(id, parseInt(text) || 0)
     }
 
-    // Cell ids are contribution-day-component-{weekday}-{week}
     let weeks: Day[][] = []
     for (let [tag] of html.matchAll(/<td[^>]*ContributionCalendar-day[^>]*>/g)) {
       let id = /id="([^"]+)"/.exec(tag)?.[1]
@@ -53,7 +48,6 @@ export async function getContributions(
     return null
   }
 }
-
 
 export async function getProfile(user: string): Promise<GitHubProfile | null> {
   try {

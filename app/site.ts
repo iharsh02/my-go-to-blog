@@ -1,14 +1,10 @@
-// Everything personal lives here — edit this file to make the site yours.
 export const site = {
   name: 'Harsh Thakur',
-  // Short line under your name on the home page
   tagline: 'keep it real!',
-  // Shown in the header pill and the social previews
   role: 'Software developer',
   url: 'https://keepitreal-nine.vercel.app',
   description:
     'Software developer interested in systems, tooling, and the messy parts of software that usually get hidden behind abstractions.',
-  // One string per paragraph on the home page. Wrap words in **double stars** to bold them.
   about: [
     "I'm a **software developer** interested in **systems**, **tooling**, and the messy parts of software that usually get hidden behind abstractions.",
     'I spend my time writing code, experimenting with **Linux** and **C++**, exploring **game/server architecture**, and occasionally going down a rabbit hole that started with a simple question.',
@@ -16,8 +12,6 @@ export const site = {
   ],
   email: 'msy2707uz@mozmail.com',
   github: 'iharsh02',
-  // Shown in the X hover preview. Copied from x.com/iharsh02 on 2026-11-24;
-  // counts don't update on their own, so refresh them now and then.
   x: {
     name: 'Senpai',
     handle: 'iharsh02',
@@ -30,7 +24,6 @@ export const site = {
     followers: 27,
     bio: 'Carbon-based lifeform operating on caffeine and sheer optimism.',
   },
-  // Set hidden: true to keep a link here but leave it off the site
   links: [
     { label: 'GitHub', href: 'https://github.com/iharsh02' },
     { label: 'X', href: 'https://x.com/iharsh02' },
@@ -40,5 +33,4 @@ export const site = {
   ] as { label: string; href: string; hidden?: boolean }[],
 }
 
-// The links actually shown on the site
 export const visibleLinks = site.links.filter((link) => !link.hidden)

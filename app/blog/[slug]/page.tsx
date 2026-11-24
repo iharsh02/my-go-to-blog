@@ -13,7 +13,6 @@ import { Note } from 'app/components/annotations'
 
 type Props = { params: Promise<{ slug: string }> }
 
-// Posts are read from disk at build time; Workers have no filesystem at runtime
 export const dynamicParams = false
 
 export async function generateStaticParams() {
@@ -67,11 +66,9 @@ export default async function Blog({ params }: Props) {
     notFound()
   }
 
-  // Up to two other posts, newest first
   let others = posts.filter((p) => p.slug !== post.slug).slice(0, 2)
 
   return (
-    // Bleed out of main's padding so rows run rail to rail
     <div className="-mx-4 sm:-mx-5">
       <script
         type="application/ld+json"
@@ -96,11 +93,11 @@ export default async function Blog({ params }: Props) {
         }}
       />
 
-      <section className="rule-top relative px-4 py-6 sm:px-5">
-        <Note arrow="left" className="absolute top-24 left-full ml-3 hidden lg:flex">
-          grab a coffee
-        </Note>
-        <article className="rounded-[22px] border border-line bg-card px-5 py-8 shadow-soft sm:px-10 sm:py-12">
+      <article>
+        <header className="rule-top relative px-4 pt-6 pb-8 sm:px-5">
+          <Note arrow="left" className="absolute top-24 left-full ml-3 hidden lg:flex">
+            grab a coffee
+          </Note>
           <Link
             href="/blog"
             className="group inline-flex items-center gap-1.5 text-[13.5px] text-muted transition-colors hover:text-fg"
@@ -123,39 +120,46 @@ export default async function Blog({ params }: Props) {
           <h1 className="title mt-4 text-[2rem] leading-[1.15] font-medium tracking-tight sm:text-[2.5rem]">
             {post.metadata.title}
           </h1>
+        </header>
 
-          <div className="mt-7 flex items-center justify-between gap-4">
-            <div className="flex min-w-0 items-center gap-3">
-              <img
-                src={avatarUri()}
-                alt=""
-                width={40}
-                height={40}
-                className="size-10 shrink-0 rounded-full border border-line bg-card-2"
-              />
-              <div className="min-w-0 text-[14px] leading-snug">
-                <p className="font-medium">{site.name}</p>
-                <p className="text-muted">{site.role}</p>
-              </div>
+        <div className="grid grid-cols-[1fr_auto] border-t border-line">
+          <div className="flex min-w-0 items-center gap-3 px-4 py-3 sm:px-5">
+            <img
+              src={avatarUri()}
+              alt=""
+              width={40}
+              height={40}
+              className="size-10 shrink-0 rounded-full border border-line bg-card"
+            />
+            <div className="min-w-0 text-[14px] leading-snug">
+              <p className="truncate font-medium">{site.name}</p>
+              <p className="truncate text-muted">{site.role}</p>
             </div>
+          </div>
+          <div className="flex items-center border-l border-line px-4 sm:px-5">
             <CopyPage markdown={`# ${post.metadata.title}\n\n${post.content}`} />
           </div>
+        </div>
 
-          <div className="prose article mt-10">
-            <CustomMDX source={post.content} />
-          </div>
-        </article>
-      </section>
+        <Hatch />
+
+        <div className="prose article px-4 py-8 sm:px-5">
+          <CustomMDX source={post.content} />
+        </div>
+      </article>
 
       <Hatch />
 
       {others.length > 0 && (
         <>
-          <section aria-labelledby="keep-reading" className="px-4 py-6 sm:px-5">
-            <h2 id="keep-reading" className="mb-3 px-1 text-[14px] font-medium">
+          <section aria-labelledby="keep-reading">
+            <h2
+              id="keep-reading"
+              className="border-b border-line px-4 py-3 font-mono text-[13px] font-medium sm:px-5"
+            >
               Keep reading
             </h2>
-            <ul className="divide-y divide-line rounded-[22px] border border-line bg-card px-5 py-1 shadow-soft sm:px-8">
+            <ul className="divide-y divide-line">
               {others.map((p) => (
                 <li key={p.slug}>
                   <PostListItem post={p} />

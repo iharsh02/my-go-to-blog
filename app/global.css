@@ -2,10 +2,6 @@
 
 @custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
 
-/*
- * Colors use light-dark(): the first value is light mode, the second dark.
- * The theme script in layout.tsx sets data-theme; without JS the OS setting wins.
- */
 :root {
   color-scheme: light dark;
 
@@ -16,10 +12,8 @@
   --line: light-dark(#e6e6eb, #26262b);
   --card: light-dark(#ffffff, #18181b);
   --card-2: light-dark(#f2f2f5, #1f1f23);
-  /* Pen color for margin notes */
   --ink: light-dark(#3d55b8, #8f9bc4);
 
-  /* Brand pops, only used inside previews and cards */
   --linkedin: #0a66c2;
   --star: #ffb800;
   --rss: #f26b1d;
@@ -29,7 +23,6 @@
   --gh-3: light-dark(#30a14e, #26a641);
   --gh-4: light-dark(#216e39, #39d353);
 
-  /* Approximates a spring with a small overshoot */
   --spring: linear(
     0, 0.006, 0.025 2.8%, 0.101 6.1%, 0.539 18.9%, 0.721 25.3%, 0.849 31.5%,
     0.937 38.1%, 0.968 41.8%, 0.991 45.7%, 1.006 50.1%, 1.015 55%, 1.017 63.9%,
@@ -54,7 +47,6 @@
   color-scheme: dark;
 }
 
-/* Box shadows can't go through light-dark(), so swap them here */
 :root[data-theme='dark'] {
   --elev-soft: 0 1px 2px rgb(0 0 0 / 0.4);
   --elev-float: 0 1px 2px rgb(0 0 0 / 0.5), 0 16px 40px -12px rgb(0 0 0 / 0.7);
@@ -111,7 +103,6 @@ body {
   color: var(--bg);
 }
 
-/* Theme switches swap every color at once instead of fading piece by piece */
 .theme-switching,
 .theme-switching * {
   transition: none !important;
@@ -133,8 +124,6 @@ body {
 .title {
   text-wrap: balance;
 }
-
-/* ---------- Article typography ---------- */
 
 .prose {
   @apply leading-[1.75];
@@ -235,35 +224,10 @@ pre::-webkit-scrollbar {
   display: none;
 }
 
-/* Remove Safari input shadow on mobile */
 input[type='text'],
 input[type='email'] {
   appearance: none;
 }
-
-/* ---------- Writing notch ---------- */
-
-.notch {
-  background-color: light-dark(#141416, #1c1c20);
-  box-shadow:
-    inset 0 0 0 1px rgb(255 255 255 / 0.08),
-    var(--elev-float);
-}
-/* Film grain over the dark surface */
-.notch::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.18;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-.notch :focus-visible {
-  outline-color: #fff;
-}
-
-/* ---------- Footer wordmark ---------- */
 
 .wordmark {
   font-size: 17.2cqw;
@@ -286,16 +250,12 @@ input[type='email'] {
   background-clip: text;
 }
 
-/* ---------- Ruled grid ---------- */
-
-/* The content column, framed by rails that run the full page height */
 .column {
   margin-inline: auto;
   width: min(42rem, calc(100% - 1rem));
   border-inline: 1px solid var(--line);
 }
 
-/* A rule across the whole screen, drawn from an element inside the column */
 .rule-top {
   position: relative;
 }
@@ -314,7 +274,6 @@ input[type='email'] {
   background: var(--line);
 }
 
-/* Hatched separator band between rows */
 .hatch {
   position: relative;
   height: 2rem;
@@ -329,12 +288,10 @@ input[type='email'] {
   );
 }
 
-/* ---------- Article page: calmer body text inside the post card ---------- */
-
 .article {
   font-size: 16px;
   line-height: 1.8;
-  color: color-mix(in oklab, var(--fg) 78%, var(--card));
+  color: color-mix(in oklab, var(--fg) 78%, var(--bg));
 }
 .article p {
   margin-block: 1.25rem;

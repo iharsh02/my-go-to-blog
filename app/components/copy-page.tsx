@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import { Icon } from './icons'
 
-// Copies the post as Markdown, handy for pasting into notes or an AI chat
 export function CopyPage({ markdown }: { markdown: string }) {
   let [copied, setCopied] = useState(false)
 

@@ -13,7 +13,6 @@ export default function Page() {
   let posts = getBlogPosts()
 
   return (
-    // Bleed out of main's padding so rows run rail to rail
     <div className="-mx-4 sm:-mx-5">
       <section className="rule-top relative px-4 pt-7 pb-6 sm:px-5">
         <Dimension
@@ -37,12 +36,11 @@ export default function Page() {
       {posts.length === 0 ? (
         <p className="px-4 py-10 text-muted sm:px-5">No posts yet. Check back soon.</p>
       ) : (
-        <section aria-label="All posts" className="relative px-4 py-6 sm:px-5">
+        <section aria-label="All posts" className="relative">
           <Note arrow="left" className="absolute top-12 left-full ml-3 hidden lg:flex">
             start here
           </Note>
-          {/* Every post in one card, newest first */}
-          <ul className="divide-y divide-line rounded-[22px] border border-line bg-card px-5 py-1 shadow-soft sm:px-8">
+          <ul className="divide-y divide-line">
             {posts.map((post) => (
               <li key={post.slug}>
                 <PostListItem post={post} />

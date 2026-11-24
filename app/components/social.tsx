@@ -31,7 +31,6 @@ export type Profile = {
   posts: { title: string; date: string }[]
 }
 
-// Card width per preview; heights are measured
 const widths: Record<string, number> = {
   Email: 248,
   GitHub: 300,
@@ -54,7 +53,6 @@ export function Social({ profile }: { profile: Profile }) {
     let rect = el.getBoundingClientRect()
     let width = widths[key]
     let center = rect.left + rect.width / 2 - row.left
-    // Keep the card inside the viewport with an 8px margin
     let left = Math.min(
       Math.max(center - width / 2, 8 - row.left),
       window.innerWidth - 8 - width - row.left
@@ -75,7 +73,6 @@ export function Social({ profile }: { profile: Profile }) {
     return () => window.removeEventListener('keydown', onKey)
   }, [active])
 
-  // Hover previews for mouse only; keyboard users get them on focus
   let triggers = (key: string) => ({
     onPointerEnter: (e: React.PointerEvent<HTMLElement>) =>
       e.pointerType === 'mouse' && show(key, e.currentTarget),
@@ -107,7 +104,6 @@ export function Social({ profile }: { profile: Profile }) {
   }
 
   let iconLinks = profile.links.filter((l) => l.label !== 'Email')
-
 
   return (
     <MotionConfig reducedMotion="user" transition={spring}>
@@ -422,7 +418,6 @@ function GitHubPreview({
   )
 }
 
-// Scalloped verified badge: a 16-point star with rounded joins and a white check
 const BADGE = Array.from({ length: 32 }, (_, i) => {
   let r = i % 2 ? 9.2 : 10.6
   let a = (i / 32) * Math.PI * 2
