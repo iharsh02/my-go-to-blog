@@ -4,6 +4,12 @@ import { CustomMDX } from 'app/components/mdx'
 import { formatDate, getBlogPosts } from 'app/blog/utils'
 import { baseUrl } from 'app/sitemap'
 import { site } from 'app/site'
+import { Icon } from 'app/components/icons'
+import { avatarUri } from 'app/lib/avatar'
+import { CopyPage } from 'app/components/copy-page'
+import { PostListItem } from 'app/components/posts'
+import { Hatch } from 'app/components/grid'
+import { Note } from 'app/components/annotations'
 
 type Props = { params: Promise<{ slug: string }> }
 
@@ -61,11 +67,12 @@ export default async function Blog({ params }: Props) {
     notFound()
   }
 
-  let newer = posts[index - 1]
-  let older = posts[index + 1]
+  // Up to two other posts, newest first
+  let others = posts.filter((p) => p.slug !== post.slug).slice(0, 2)
 
   return (
-    <article>
+    // Bleed out of main's padding so rows run rail to rail
+    <div className="-mx-4 sm:-mx-5">
       <script
         type="application/ld+json"
         suppressHydrationWarning
@@ -89,42 +96,76 @@ export default async function Blog({ params }: Props) {
         }}
       />
 
-      <header className="mb-10">
-        <h1 className="title text-2xl font-semibold tracking-tight">
-          {post.metadata.title}
-        </h1>
-        <p className="mt-2 text-sm text-muted">
-          <time dateTime={post.metadata.publishedAt}>
-            {formatDate(post.metadata.publishedAt)}
-          </time>
-          {' · '}
-          {post.readingTime} min read
-        </p>
-      </header>
+      <section className="rule-top relative px-4 py-6 sm:px-5">
+        <Note arrow="left" className="absolute top-24 left-full ml-3 hidden lg:flex">
+          grab a coffee
+        </Note>
+        <article className="rounded-[22px] border border-line bg-card px-5 py-8 shadow-soft sm:px-10 sm:py-12">
+          <Link
+            href="/blog"
+            className="group inline-flex items-center gap-1.5 text-[13.5px] text-muted transition-colors hover:text-fg"
+          >
+            <Icon
+              name="left"
+              className="size-3.5 transition-transform duration-500 ease-spring group-hover:-translate-x-0.5"
+            />
+            All posts
+          </Link>
 
-      <div className="prose">
-        <CustomMDX source={post.content} />
-      </div>
+          <p className="mt-8 flex flex-wrap items-center gap-x-4 gap-y-1 text-[14px]">
+            {post.metadata.tag && <span className="font-medium">{post.metadata.tag}</span>}
+            <time dateTime={post.metadata.publishedAt} className="text-muted">
+              {formatDate(post.metadata.publishedAt)}
+            </time>
+            <span className="text-muted">{post.readingTime} min read</span>
+          </p>
 
-      <nav className="mt-16 flex justify-between gap-6 border-t border-line pt-6 text-sm">
-        {[
-          { post: older, label: 'Previous' },
-          { post: newer, label: 'Next' },
-        ].map(({ post, label }, i) =>
-          post ? (
-            <Link
-              key={label}
-              href={`/blog/${post.slug}`}
-              className={`group max-w-[48%] ${i === 1 ? 'ml-auto text-right' : ''}`}
-            >
-              <span className="block text-muted">{label}</span>
-              <span className="mt-0.5 block font-medium underline decoration-transparent underline-offset-4 transition-colors group-hover:decoration-line">
-                {post.metadata.title}
-              </span>
-            </Link>
-          ) : null
-        )}
-      </nav>
-    </article>
+          <h1 className="title mt-4 text-[2rem] leading-[1.15] font-medium tracking-tight sm:text-[2.5rem]">
+            {post.metadata.title}
+          </h1>
+
+          <div className="mt-7 flex items-center justify-between gap-4">
+            <div className="flex min-w-0 items-center gap-3">
+              <img
+                src={avatarUri()}
+                alt=""
+                width={40}
+                height={40}
+                className="size-10 shrink-0 rounded-full border border-line bg-card-2"
+              />
+              <div className="min-w-0 text-[14px] leading-snug">
+                <p className="font-medium">{site.name}</p>
+                <p className="text-muted">{site.role}</p>
+              </div>
+            </div>
+            <CopyPage markdown={`# ${post.metadata.title}\n\n${post.content}`} />
+          </div>
+
+          <div className="prose article mt-10">
+            <CustomMDX source={post.content} />
+          </div>
+        </article>
+      </section>
+
+      <Hatch />
+
+      {others.length > 0 && (
+        <>
+          <section aria-labelledby="keep-reading" className="px-4 py-6 sm:px-5">
+            <h2 id="keep-reading" className="mb-3 px-1 text-[14px] font-medium">
+              Keep reading
+            </h2>
+            <ul className="divide-y divide-line rounded-[22px] border border-line bg-card px-5 py-1 shadow-soft sm:px-8">
+              {others.map((p) => (
+                <li key={p.slug}>
+                  <PostListItem post={p} />
+                </li>
+              ))}
+            </ul>
+          </section>
+          <Hatch />
+        </>
+      )}
+    </div>
   )
 }

@@ -1,44 +1,72 @@
 @import 'tailwindcss';
 
-:root {
-  --bg: #faf9f6;
-  --fg: #1c1b19;
-  --muted: #6f6d67;
-  --subtle: #a3a19a;
-  --line: #e6e3dc;
-  --card: #f2f0ea;
-  --accent: #c2410c;
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
 
-  --sh-class: #2d5e9d;
-  --sh-identifier: #354150;
-  --sh-sign: #8996a3;
-  --sh-string: #007f7a;
-  --sh-keyword: #c2410c;
-  --sh-comment: #a19595;
-  --sh-jsxliterals: #6266d1;
-  --sh-property: #b45309;
-  --sh-entity: #b45309;
+/*
+ * Colors use light-dark(): the first value is light mode, the second dark.
+ * The theme script in layout.tsx sets data-theme; without JS the OS setting wins.
+ */
+:root {
+  color-scheme: light dark;
+
+  --bg: light-dark(#f9f9fb, #111113);
+  --fg: light-dark(#1f1f23, #ededf0);
+  --muted: light-dark(#62626b, #a0a0a9);
+  --subtle: light-dark(#a1a1aa, #55555e);
+  --line: light-dark(#e6e6eb, #26262b);
+  --card: light-dark(#ffffff, #18181b);
+  --card-2: light-dark(#f2f2f5, #1f1f23);
+  /* Pen color for margin notes */
+  --ink: light-dark(#3d55b8, #8f9bc4);
+
+  /* Brand pops, only used inside previews and cards */
+  --linkedin: #0a66c2;
+  --star: #ffb800;
+  --rss: #f26b1d;
+  --gh-0: light-dark(#ebedf0, #1d1d22);
+  --gh-1: light-dark(#9be9a8, #0e4429);
+  --gh-2: light-dark(#40c463, #006d32);
+  --gh-3: light-dark(#30a14e, #26a641);
+  --gh-4: light-dark(#216e39, #39d353);
+
+  /* Approximates a spring with a small overshoot */
+  --spring: linear(
+    0, 0.006, 0.025 2.8%, 0.101 6.1%, 0.539 18.9%, 0.721 25.3%, 0.849 31.5%,
+    0.937 38.1%, 0.968 41.8%, 0.991 45.7%, 1.006 50.1%, 1.015 55%, 1.017 63.9%,
+    1.001
+  );
+
+  --sh-class: light-dark(#2d5e9d, #7cb4ff);
+  --sh-identifier: light-dark(#354150, #ededf0);
+  --sh-sign: light-dark(#8996a3, #8996a3);
+  --sh-string: light-dark(#007f7a, #3cc4b4);
+  --sh-keyword: light-dark(#b4235a, #f97ba6);
+  --sh-comment: light-dark(#8f8f99, #6b6b75);
+  --sh-jsxliterals: light-dark(#6266d1, #9d9ff5);
+  --sh-property: light-dark(#b45309, #f5b76a);
+  --sh-entity: light-dark(#b45309, #f5b76a);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #111110;
-    --fg: #ecebe7;
-    --muted: #9a9892;
-    --subtle: #64625d;
-    --line: #262523;
-    --card: #1a1918;
-    --accent: #fb8a4b;
+:root[data-theme='light'] {
+  color-scheme: light;
+}
+:root[data-theme='dark'] {
+  color-scheme: dark;
+}
 
-    --sh-class: #7cb4ff;
-    --sh-identifier: #ecebe7;
-    --sh-keyword: #fb8a4b;
-    --sh-string: #3cc4b4;
-    --sh-property: #f5b76a;
-    --sh-entity: #f5b76a;
-  }
-  html {
-    color-scheme: dark;
+/* Box shadows can't go through light-dark(), so swap them here */
+:root[data-theme='dark'] {
+  --elev-soft: 0 1px 2px rgb(0 0 0 / 0.4);
+  --elev-float: 0 1px 2px rgb(0 0 0 / 0.5), 0 16px 40px -12px rgb(0 0 0 / 0.7);
+}
+:root:not([data-theme='dark']) {
+  --elev-soft: 0 1px 2px rgb(16 16 20 / 0.04), 0 4px 12px -6px rgb(16 16 20 / 0.06);
+  --elev-float: 0 1px 2px rgb(16 16 20 / 0.05), 0 16px 40px -12px rgb(16 16 20 / 0.18);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --elev-soft: 0 1px 2px rgb(0 0 0 / 0.4);
+    --elev-float: 0 1px 2px rgb(0 0 0 / 0.5), 0 16px 40px -12px rgb(0 0 0 / 0.7);
   }
 }
 
@@ -49,14 +77,23 @@
   --color-subtle: var(--subtle);
   --color-line: var(--line);
   --color-card: var(--card);
-  --color-accent: var(--accent);
+  --color-card-2: var(--card-2);
+  --color-linkedin: var(--linkedin);
+  --color-star: var(--star);
+  --color-rss: var(--rss);
+  --shadow-soft: var(--elev-soft);
+  --shadow-float: var(--elev-float);
+  --ease-spring: var(--spring);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-hand: var(--font-caveat);
+  --color-ink: var(--ink);
 }
 
 html {
   min-width: 360px;
   scroll-behavior: smooth;
+  scroll-padding-top: 6rem;
 }
 
 body {
@@ -64,20 +101,33 @@ body {
 }
 
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--fg);
   outline-offset: 2px;
-  border-radius: 4px;
+  border-radius: 6px;
+}
+
+::selection {
+  background-color: var(--fg);
+  color: var(--bg);
+}
+
+/* Theme switches swap every color at once instead of fading piece by piece */
+.theme-switching,
+.theme-switching * {
+  transition: none !important;
 }
 
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
-}
-
-::selection {
-  background-color: var(--accent);
-  color: var(--bg);
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 .title {
@@ -152,15 +202,15 @@ body {
 }
 
 .prose img {
-  @apply my-8 rounded-xl border border-line;
+  @apply my-8 rounded-2xl border border-line;
 }
 
 .prose code {
-  @apply rounded-md bg-card px-1.5 py-0.5 font-mono text-[0.875em];
+  @apply rounded-md bg-card-2 px-1.5 py-0.5 font-mono text-[0.875em];
 }
 
 .prose pre {
-  @apply my-8 overflow-x-auto rounded-xl border border-line bg-card px-5 py-4 text-sm;
+  @apply my-8 overflow-x-auto rounded-2xl border border-line bg-card px-5 py-4 text-sm shadow-soft;
 }
 
 .prose pre code {
@@ -189,4 +239,135 @@ pre::-webkit-scrollbar {
 input[type='text'],
 input[type='email'] {
   appearance: none;
+}
+
+/* ---------- Writing notch ---------- */
+
+.notch {
+  background-color: light-dark(#141416, #1c1c20);
+  box-shadow:
+    inset 0 0 0 1px rgb(255 255 255 / 0.08),
+    var(--elev-float);
+}
+/* Film grain over the dark surface */
+.notch::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.18;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.notch :focus-visible {
+  outline-color: #fff;
+}
+
+/* ---------- Footer wordmark ---------- */
+
+.wordmark {
+  font-size: 17.2cqw;
+  height: 0.74em;
+  overflow-x: visible;
+  overflow-y: clip;
+  text-align: center;
+  white-space: nowrap;
+  font-weight: 650;
+  line-height: 0.86;
+  letter-spacing: -0.065em;
+  user-select: none;
+  color: transparent;
+  background: linear-gradient(
+    to bottom,
+    color-mix(in oklab, var(--fg) 12%, var(--bg)) 25%,
+    color-mix(in oklab, var(--fg) 0%, var(--bg)) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/* ---------- Ruled grid ---------- */
+
+/* The content column, framed by rails that run the full page height */
+.column {
+  margin-inline: auto;
+  width: min(42rem, calc(100% - 1rem));
+  border-inline: 1px solid var(--line);
+}
+
+/* A rule across the whole screen, drawn from an element inside the column */
+.rule-top {
+  position: relative;
+}
+.rule-top::before,
+.hatch::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  width: 100vw;
+  translate: -50% 0;
+  pointer-events: none;
+}
+.rule-top::before {
+  top: -1px;
+  height: 1px;
+  background: var(--line);
+}
+
+/* Hatched separator band between rows */
+.hatch {
+  position: relative;
+  height: 2rem;
+}
+.hatch::before {
+  inset-block: 0;
+  border-block: 1px solid var(--line);
+  background-image: repeating-linear-gradient(
+    135deg,
+    color-mix(in oklab, var(--fg) 9%, transparent) 0 1px,
+    transparent 1px 8px
+  );
+}
+
+/* ---------- Article page: calmer body text inside the post card ---------- */
+
+.article {
+  font-size: 16px;
+  line-height: 1.8;
+  color: color-mix(in oklab, var(--fg) 78%, var(--card));
+}
+.article p {
+  margin-block: 1.25rem;
+}
+.article h2,
+.article h3 {
+  color: var(--fg);
+  font-weight: 500;
+  letter-spacing: -0.015em;
+}
+.article h2 {
+  font-size: 1.5rem;
+  margin-top: 3.5rem;
+  margin-bottom: 1rem;
+}
+.article h3 {
+  font-size: 1.2rem;
+  margin-top: 2.5rem;
+}
+.article strong {
+  color: var(--fg);
+}
+.article a:not(.anchor) {
+  color: var(--fg);
+}
+.article blockquote {
+  margin-block: 2rem;
+  border-left: 2px solid var(--line);
+  border-radius: 0 16px 16px 0;
+  background: var(--card-2);
+  padding: 0.25rem 1.25rem;
+  font-size: 15px;
+}
+.article blockquote p {
+  margin-block: 1rem;
 }

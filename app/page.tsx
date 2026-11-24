@@ -1,72 +1,133 @@
-import Link from 'next/link'
-import { LinkIcon } from 'app/components/icons'
-import { site } from 'app/site'
-import { Style , Avatar } from "@dicebear/core"
-import lorelei from '@dicebear/styles/lorelei.json'
+import { site, visibleLinks } from 'app/site'
+import { avatarUri } from 'app/lib/avatar'
+import { getContributions, getProfile } from 'app/lib/github'
+import { formatDate, getBlogPosts, getExcerpt } from 'app/blog/utils'
+import { Social } from 'app/components/social'
+import { WritingNotch } from 'app/components/notch'
+import { Dimension, Note } from 'app/components/annotations'
+import { Hatch } from 'app/components/grid'
 
-const style = new Style(lorelei);
-
-const UserAvatar =({seed = 'Sophie'} : {seed?: string})=>{
-  const dataUri = new Avatar(style , {
-    seed, 
-    size: 128
-  }).toDataUri();
-
-  return <img src={dataUri} alt="Avatar" width={128} height={128} />
+// Renders **bold** spans from the strings in site.about
+function Rich({ text }: { text: string }) {
+  return text.split(/(\*\*[^*]+\*\*)/).map((part, i) =>
+    part.startsWith('**') ? (
+      <strong key={i} className="font-semibold text-fg">
+        {part.slice(2, -2)}
+      </strong>
+    ) : (
+      part
+    )
+  )
 }
 
-export default function Page() {
+export default async function Page() {
+  let [contributions, github] = await Promise.all([
+    getContributions(site.github),
+    getProfile(site.github),
+  ])
+  let posts = getBlogPosts()
+  let avatar = avatarUri()
+
   return (
-    <section>
-      <div className="flex items-center gap-5 sm:gap-6">
-        <div
-          aria-hidden
-          className="grid size-20 shrink-0 place-items-center rounded-full border border-line bg-card text-2xl font-medium tracking-tight text-muted select-none sm:size-24 sm:text-3xl"
-        >
-        <UserAvatar />
+    // Bleed out of main's padding so rows run rail to rail
+    <div className="-mx-4 sm:-mx-5">
+      <section className="rule-top relative grid grid-cols-[auto_1fr]">
+        {/* Margin details, only where the gutters have room */}
+        <Dimension
+          label="672"
+          className="absolute inset-x-0 bottom-full mb-5 hidden md:flex"
+        />
+        <Dimension
+          vertical
+          label="Ø96"
+          className="absolute top-4 right-full bottom-4 mr-4 hidden lg:flex"
+        />
+        <Note arrow="left" className="absolute top-14 left-full ml-5 hidden lg:flex">
+          that&apos;s me
+        </Note>
+        <div className="border-r border-line p-3 sm:p-4">
+          <img
+            src={avatar}
+            alt={`Illustrated avatar of ${site.name}`}
+            width={96}
+            height={96}
+            className="size-20 rounded-full border border-line bg-card sm:size-24"
+          />
         </div>
-        <div className="min-w-0">
-          <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
+        <div className="flex min-w-0 flex-col justify-end">
+          <h1 className="border-b border-line px-4 pb-2 text-2xl font-semibold tracking-tight sm:px-5 sm:text-[1.75rem]">
             {site.name}
           </h1>
-          <p className="mt-1 text-muted italic">{site.tagline}</p>
-          <ul className="mt-3 flex flex-wrap gap-2">
-            {site.links.map(({ label, href }) => (
-              <li key={label}>
-                <a
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={label}
-                  title={label}
-                  className="grid size-9 place-items-center rounded-full border border-line text-muted transition-colors hover:border-fg hover:text-fg"
-                >
-                  <LinkIcon label={label} />
-                </a>
-              </li>
-            ))}
-          </ul>
+          <p className="px-4 py-2 font-mono text-[13px] text-muted sm:px-5">{site.tagline}</p>
         </div>
-      </div>
+      </section>
 
-      <div className="mt-12 space-y-4 text-lg leading-relaxed">
+      <Hatch measure="32" />
+
+      <section className="space-y-4 px-4 py-6 text-[1.0625rem] leading-relaxed text-muted sm:px-5">
         {site.about.map((paragraph) => (
-          <p key={paragraph}>{paragraph}</p>
+          <p key={paragraph}>
+            <Rich text={paragraph} />
+          </p>
         ))}
-      </div>
+      </section>
 
-      <Link
-        href="/blog"
-        className="group mt-10 inline-flex items-center gap-2 rounded-full border border-line px-4 py-2 text-sm transition-colors hover:border-fg"
-      >
-        Read my writing
-        <span
-          aria-hidden
-          className="text-muted transition-transform group-hover:translate-x-0.5 group-hover:text-fg"
+      <Hatch />
+
+      <section aria-label="Contact" className="relative px-4 py-4 sm:px-5">
+        <Note
+          arrow="right"
+          tilt={-4}
+          className="absolute top-1/2 right-full mr-2 hidden -translate-y-1/2 lg:flex"
         >
-          →
-        </span>
-      </Link>
-    </section>
+          follow me
+        </Note>
+        <Social
+          profile={{
+            name: site.name,
+            role: site.role,
+            bio: site.description,
+            avatar,
+            email: site.email,
+            links: visibleLinks,
+            contributions,
+            github,
+            x: site.x,
+            posts: posts.slice(0, 2).map((p) => ({
+              title: p.metadata.title,
+              date: formatDate(p.metadata.publishedAt, 'short'),
+            })),
+          }}
+        />
+      </section>
+
+      <Hatch />
+
+      {posts.length > 0 && (
+        <>
+          <section id="writing" aria-label="Writing" className="relative px-4 py-6 sm:px-5">
+            <Note
+              arrow="down-left"
+              tilt={5}
+              className="absolute top-3 left-full ml-3 hidden lg:flex"
+            >
+              fresh off the keyboard
+            </Note>
+            <WritingNotch
+              total={posts.length}
+              post={{
+                title: posts[0].metadata.title,
+                summary: posts[0].metadata.summary,
+                href: `/blog/${posts[0].slug}`,
+                date: formatDate(posts[0].metadata.publishedAt, 'short'),
+                readingTime: posts[0].readingTime,
+                excerpt: getExcerpt(posts[0].content),
+              }}
+            />
+          </section>
+          <Hatch />
+        </>
+      )}
+    </div>
   )
 }

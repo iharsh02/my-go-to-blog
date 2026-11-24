@@ -6,6 +6,8 @@ type Metadata = {
   publishedAt: string
   summary: string
   image?: string
+  // Optional label shown before the date in the post list, e.g. tag: Essay
+  tag?: string
 }
 
 function parseFrontmatter(fileContent: string) {
@@ -69,4 +71,20 @@ export function formatDate(date: string, style: 'short' | 'long' = 'long') {
     day: 'numeric',
     year: 'numeric',
   })
+}
+
+// Opening paragraphs of a post as plain text, for previews
+export function getExcerpt(content: string, paragraphs = 3) {
+  return content
+    .split(/\n\s*\n/)
+    .map((p) => p.trim())
+    .filter((p) => p && !/^(#|>|```|<|\||!\[|import |export |- |\* |\d+\. )/.test(p))
+    .slice(0, paragraphs)
+    .map((p) =>
+      p
+        .replace(/!\[[^\]]*\]\([^)]*\)/g, '')
+        .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
+        .replace(/(\*\*|__|\*|_|`)/g, '')
+        .replace(/\s+/g, ' ')
+    )
 }

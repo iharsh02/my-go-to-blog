@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { Icon, type IconName } from './icons'
 
 // Row used for post listings.
 export function ListItem({
@@ -38,7 +39,7 @@ export function ListItem({
   }
 
   let className =
-    'group -mx-3 block rounded-md px-3 py-2.5 transition-colors hover:bg-card'
+    'group -mx-3 block rounded-xl px-3 py-2.5 transition-colors hover:bg-card'
 
   return (
     <li>
@@ -59,14 +60,27 @@ export function Section({
   title,
   children,
   id,
+  icon,
+  action,
 }: {
   title: string
   children: React.ReactNode
   id?: string
+  icon?: IconName
+  action?: React.ReactNode
 }) {
   return (
-    <section id={id} className="scroll-mt-8">
-      <h2 className="mb-3 text-sm text-muted">{title}</h2>
+    <section id={id} aria-labelledby={id && `${id}-title`}>
+      <div className="mb-4 flex items-center justify-between gap-4">
+        <h2
+          id={id && `${id}-title`}
+          className="flex items-center gap-2 text-sm font-medium text-muted"
+        >
+          {icon && <Icon name={icon} className="size-3.5" />}
+          {title}
+        </h2>
+        {action}
+      </div>
       {children}
     </section>
   )

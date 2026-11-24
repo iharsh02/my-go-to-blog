@@ -1,0 +1,1 @@
+- Read `DESIGN.md` before changing any page, component or style: it defines the blueprint grid, tokens, components, motion and how to verify UI work.
